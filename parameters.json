@@ -1,0 +1,22 @@
+{
+  "runs": [
+    {
+      "run_name": "resnet50_training",
+      "gpu_model": "A100",
+      "gpu_count": 8,
+      "duration_hours": 24,
+      "utilization": 0.85,
+      "region": "us-west-2",
+      "pue": 1.2
+    },
+    {
+      "run_name": "bert_finetuning",
+      "gpu_model": "V100",
+      "gpu_count": 4,
+      "duration_hours": 12,
+      "utilization": 0.75,
+      "region": "europe-west6",
+      "pue": 1.15
+    }
+  ]
+}
