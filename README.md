@@ -32,12 +32,15 @@ python3 calculate_emissions.py --output results/2025/january_training.csv
 ### Configuration Files
 
 - **`gpu_specs.json`** - GPU models and their TDP (Thermal Design Power) specifications
-  - Includes: A100, H100, V100, T4, A10
+  - Includes: 15 datacenter GPUs (NVIDIA: A100, H100, V100, T4, A10, A40, L4, L40, L40S, P100, K80; AMD: MI250X, MI210)
+  - Contains metadata with data sources and update instructions
   - Add custom GPUs as needed
 
 - **`carbon_intensity.json`** - Regional carbon intensity values (kg CO₂/kWh)
-  - Includes: Major AWS/GCP/Azure regions
-  - Values based on regional grid mix
+  - Includes: 21 major cloud regions across AWS, GCP, and Azure
+  - Covers US, Canada, Europe, Asia Pacific, and South America
+  - Contains metadata with data sources and update instructions
+  - Values based on EPA eGRID 2022 and cloud provider reports
 
 - **`parameters.json`** - Your training run configurations
   - Edit this file to add/modify runs
@@ -45,7 +48,6 @@ python3 calculate_emissions.py --output results/2025/january_training.csv
 ### Scripts
 
 - **`calculate_emissions.py`** - Main calculation script
-- **`update_data_sources.py`** - Data source update utility (see [Updating Data Sources](#updating-data-sources))
 
 ### Output
 
@@ -186,62 +188,65 @@ Edit `carbon_intensity.json`:
 - `region_name`: Descriptive location name
 - `notes`: Data source or additional context
 
-## Updating Data Sources
+## Updating Data
 
-The repository includes `update_data_sources.py` to help refresh GPU specifications and carbon intensity data from authoritative sources.
+Both data files include `_metadata` sections with sources and update instructions.
 
-### Update GPU Specifications
+### Updating GPU Specifications
 
-Automatically fetch updated GPU TDP values from the voidful/gpu-info-api repository:
+**When to update:** When new GPU models are released or you need to add a custom GPU
 
-```bash
-# Preview changes without modifying files
-python3 update_data_sources.py --gpu --dry-run
+**How to update:**
 
-# Update GPU specifications
-python3 update_data_sources.py --gpu
-```
+1. Find the GPU TDP from the manufacturer's specification sheet:
+   - NVIDIA: [Official spec sheets](https://www.nvidia.com/en-us/data-center/)
+   - AMD: [Instinct specifications](https://www.amd.com/en/products/accelerators/instinct.html)
 
-The script will:
-- Fetch latest GPU data from [voidful/gpu-info-api](https://github.com/voidful/gpu-info-api)
-- Extract NVIDIA datacenter GPU specifications
-- Create a timestamped backup of `gpu_specs.json`
-- Show what changed (new GPUs, updated TDP values)
-- Update the local `gpu_specs.json` file
+2. Open `gpu_specs.json` and add a new entry:
+   ```json
+   "GPU-MODEL": {
+     "name": "Full GPU Name",
+     "tdp_watts": 300,
+     "vendor": "NVIDIA",
+     "memory_gb": 24,
+     "notes": "Architecture and use case"
+   }
+   ```
 
-**Note:** Always run with `--dry-run` first to review changes. GPU TDP can vary by variant, so manually verify values before using them in production calculations.
+3. Update the `_metadata.last_updated` field with current date
 
-### Update Carbon Intensity Data
+**Example sources:**
+- [voidful/gpu-info-api](https://github.com/voidful/gpu-info-api) - Community-maintained GPU database
+- [TechPowerUp GPU Database](https://www.techpowerup.com/gpu-specs/) - Comprehensive specifications
 
-View guidance for updating carbon intensity from authoritative sources:
+### Updating Carbon Intensity
 
-```bash
-python3 update_data_sources.py --carbon
-```
+**When to update:** Annually or when new grid data is published (grids change as renewables are added)
 
-This displays:
-- Links to authoritative data sources (Cloud Carbon Footprint, EPA eGRID, cloud providers)
-- Instructions for extracting values
-- Example format for updating `carbon_intensity.json`
-- Recommended update frequency
+**How to update:**
 
-**Carbon intensity sources:**
-1. **Cloud Carbon Footprint** - [cloud-carbon-coefficients](https://github.com/cloud-carbon-footprint/cloud-carbon-coefficients)
-2. **EPA eGRID** - [Download data](https://www.epa.gov/egrid/download-data)
-3. **Google Cloud** - [Region carbon data](https://cloud.google.com/sustainability/region-carbon)
-4. **electricityMap API** - [API documentation](https://api.electricitymap.org/)
+1. Find updated carbon intensity data:
+   - **US regions:** [EPA eGRID](https://www.epa.gov/egrid/download-data) (updated annually)
+   - **Cloud regions:** [Cloud Carbon Footprint coefficients](https://github.com/cloud-carbon-footprint/cloud-carbon-coefficients)
+   - **Google Cloud:** [Region carbon data](https://cloud.google.com/sustainability/region-carbon)
+   - **Real-time data:** [electricityMap](https://app.electricitymap.org/)
 
-**Recommended update frequency:**
-- Carbon intensity: Annually or when new grid data is published
-- GPU specifications: When new GPU models are released or TDP values are revised
+2. Open `carbon_intensity.json` and update the region's `kg_co2_per_kwh` value:
+   ```json
+   "region-code": {
+     "region_name": "Region Name",
+     "kg_co2_per_kwh": 0.450,
+     "provider": "AWS",
+     "country": "United States",
+     "notes": "EPA eGRID 2023 data, updated 2025-11"
+   }
+   ```
 
-### Update All Data Sources
+3. Update the `notes` field with source and date
 
-Run both GPU update and show carbon guidance:
+4. Update the `_metadata.last_updated` field with current date
 
-```bash
-python3 update_data_sources.py --all
-```
+**Note:** Carbon intensity values vary by time of day and season. The values in this database represent annual averages.
 
 ## Understanding Results
 

@@ -1,56 +1,162 @@
 {
+  "_metadata": {
+    "description": "Regional grid carbon intensity values for cloud datacenters",
+    "sources": [
+      "EPA eGRID 2022 (US regions)",
+      "Cloud Carbon Footprint methodology",
+      "Google Cloud sustainability reports",
+      "electricityMap data"
+    ],
+    "last_updated": "2025-11",
+    "units": "kg CO2 per kWh",
+    "notes": "Values represent average grid carbon intensity. Actual values vary by time of day and season.",
+    "update_instructions": "To update: 1) Check EPA eGRID, Cloud Carbon Footprint repo, or provider sustainability reports. 2) Update kg_co2_per_kwh value. 3) Update notes with source and date."
+  },
   "us-east-1": {
     "region_name": "US East (N. Virginia)",
     "kg_co2_per_kwh": 0.448,
     "provider": "AWS",
-    "notes": "Virginia grid mix, EPA eGRID data"
+    "country": "United States",
+    "notes": "Virginia grid mix, EPA eGRID 2022 SERC region"
+  },
+  "us-east-2": {
+    "region_name": "US East (Ohio)",
+    "kg_co2_per_kwh": 0.652,
+    "provider": "AWS",
+    "country": "United States",
+    "notes": "Ohio grid mix, EPA eGRID 2022 RFC region"
+  },
+  "us-west-1": {
+    "region_name": "US West (N. California)",
+    "kg_co2_per_kwh": 0.281,
+    "provider": "AWS",
+    "country": "United States",
+    "notes": "California grid mix, EPA eGRID 2022 WECC region"
   },
   "us-west-2": {
     "region_name": "US West (Oregon)",
     "kg_co2_per_kwh": 0.290,
     "provider": "AWS",
-    "notes": "High renewable content"
+    "country": "United States",
+    "notes": "Pacific Northwest grid, high renewable content"
   },
   "us-central1": {
     "region_name": "US Central (Iowa)",
     "kg_co2_per_kwh": 0.486,
     "provider": "GCP",
-    "notes": "Midwest grid mix"
+    "country": "United States",
+    "notes": "Iowa grid mix, MRO region"
+  },
+  "ca-central-1": {
+    "region_name": "Canada (Montreal)",
+    "kg_co2_per_kwh": 0.020,
+    "provider": "AWS",
+    "country": "Canada",
+    "notes": "Quebec hydro power, very low carbon"
+  },
+  "eu-west-1": {
+    "region_name": "Europe West (Ireland)",
+    "kg_co2_per_kwh": 0.312,
+    "provider": "AWS",
+    "country": "Ireland",
+    "notes": "Irish grid mix, increasing wind power"
+  },
+  "eu-west-2": {
+    "region_name": "Europe West (London)",
+    "kg_co2_per_kwh": 0.257,
+    "provider": "AWS",
+    "country": "United Kingdom",
+    "notes": "UK grid mix, offshore wind and nuclear"
+  },
+  "eu-west-3": {
+    "region_name": "Europe West (Paris)",
+    "kg_co2_per_kwh": 0.057,
+    "provider": "AWS",
+    "country": "France",
+    "notes": "French nuclear grid, very low carbon"
+  },
+  "eu-central-1": {
+    "region_name": "Europe Central (Frankfurt)",
+    "kg_co2_per_kwh": 0.338,
+    "provider": "AWS",
+    "country": "Germany",
+    "notes": "German grid mix, transitioning to renewables"
+  },
+  "eu-north-1": {
+    "region_name": "Europe North (Stockholm)",
+    "kg_co2_per_kwh": 0.008,
+    "provider": "AWS",
+    "country": "Sweden",
+    "notes": "Swedish hydro and nuclear, near zero carbon"
   },
   "europe-west1": {
     "region_name": "Europe West (Belgium)",
     "kg_co2_per_kwh": 0.198,
     "provider": "GCP",
-    "notes": "Low carbon grid"
+    "country": "Belgium",
+    "notes": "Belgian grid, low carbon"
   },
   "europe-west4": {
     "region_name": "Europe West (Netherlands)",
     "kg_co2_per_kwh": 0.425,
     "provider": "GCP",
-    "notes": "Mixed renewable and fossil fuels"
+    "country": "Netherlands",
+    "notes": "Dutch grid mix, renewable and fossil fuels"
   },
   "europe-west6": {
     "region_name": "Europe West (Zurich)",
     "kg_co2_per_kwh": 0.029,
     "provider": "GCP",
-    "notes": "Very low carbon (hydro/nuclear)"
+    "country": "Switzerland",
+    "notes": "Swiss hydro and nuclear, very low carbon"
   },
   "asia-east1": {
     "region_name": "Asia East (Taiwan)",
     "kg_co2_per_kwh": 0.522,
     "provider": "GCP",
-    "notes": "High coal dependency"
+    "country": "Taiwan",
+    "notes": "Taiwan grid, high coal dependency"
   },
   "asia-southeast1": {
     "region_name": "Asia Southeast (Singapore)",
     "kg_co2_per_kwh": 0.408,
     "provider": "GCP",
-    "notes": "Natural gas heavy"
+    "country": "Singapore",
+    "notes": "Natural gas heavy grid"
   },
-  "australia-southeast1": {
-    "region_name": "Australia Southeast (Sydney)",
-    "kg_co2_per_kwh": 0.780,
+  "asia-northeast1": {
+    "region_name": "Asia Northeast (Tokyo)",
+    "kg_co2_per_kwh": 0.506,
     "provider": "GCP",
-    "notes": "High coal content"
+    "country": "Japan",
+    "notes": "Japanese grid, post-Fukushima fossil fuel increase"
+  },
+  "ap-south-1": {
+    "region_name": "Asia Pacific (Mumbai)",
+    "kg_co2_per_kwh": 0.708,
+    "provider": "AWS",
+    "country": "India",
+    "notes": "Indian grid, high coal content"
+  },
+  "ap-southeast-1": {
+    "region_name": "Asia Pacific (Singapore)",
+    "kg_co2_per_kwh": 0.408,
+    "provider": "AWS",
+    "country": "Singapore",
+    "notes": "Natural gas heavy grid"
+  },
+  "ap-southeast-2": {
+    "region_name": "Asia Pacific (Sydney)",
+    "kg_co2_per_kwh": 0.780,
+    "provider": "AWS",
+    "country": "Australia",
+    "notes": "Australian grid, high coal content"
+  },
+  "sa-east-1": {
+    "region_name": "South America (Sao Paulo)",
+    "kg_co2_per_kwh": 0.109,
+    "provider": "AWS",
+    "country": "Brazil",
+    "notes": "Brazilian grid, high hydro content"
   }
 }
