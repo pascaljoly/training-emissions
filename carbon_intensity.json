@@ -1,42 +1,56 @@
 {
   "us-east-1": {
     "region_name": "US East (N. Virginia)",
-    "kg_co2_per_kwh": 0.415,
-    "notes": "Virginia grid mix"
+    "kg_co2_per_kwh": 0.448,
+    "provider": "AWS",
+    "notes": "Virginia grid mix, EPA eGRID data"
   },
   "us-west-2": {
     "region_name": "US West (Oregon)",
-    "kg_co2_per_kwh": 0.285,
+    "kg_co2_per_kwh": 0.290,
+    "provider": "AWS",
     "notes": "High renewable content"
   },
   "us-central1": {
     "region_name": "US Central (Iowa)",
     "kg_co2_per_kwh": 0.486,
+    "provider": "GCP",
     "notes": "Midwest grid mix"
   },
   "europe-west1": {
     "region_name": "Europe West (Belgium)",
     "kg_co2_per_kwh": 0.198,
+    "provider": "GCP",
     "notes": "Low carbon grid"
+  },
+  "europe-west4": {
+    "region_name": "Europe West (Netherlands)",
+    "kg_co2_per_kwh": 0.425,
+    "provider": "GCP",
+    "notes": "Mixed renewable and fossil fuels"
   },
   "europe-west6": {
     "region_name": "Europe West (Zurich)",
-    "kg_co2_per_kwh": 0.024,
+    "kg_co2_per_kwh": 0.029,
+    "provider": "GCP",
     "notes": "Very low carbon (hydro/nuclear)"
   },
   "asia-east1": {
     "region_name": "Asia East (Taiwan)",
-    "kg_co2_per_kwh": 0.554,
+    "kg_co2_per_kwh": 0.522,
+    "provider": "GCP",
     "notes": "High coal dependency"
   },
   "asia-southeast1": {
     "region_name": "Asia Southeast (Singapore)",
     "kg_co2_per_kwh": 0.408,
+    "provider": "GCP",
     "notes": "Natural gas heavy"
   },
   "australia-southeast1": {
     "region_name": "Australia Southeast (Sydney)",
     "kg_co2_per_kwh": 0.780,
+    "provider": "GCP",
     "notes": "High coal content"
   }
 }

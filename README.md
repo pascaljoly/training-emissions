@@ -124,11 +124,21 @@ Edit `gpu_specs.json`:
   "RTX-4090": {
     "name": "NVIDIA RTX 4090",
     "tdp_watts": 450,
+    "vendor": "NVIDIA",
     "memory_gb": 24,
     "notes": "Consumer GPU"
   }
 }
 ```
+
+**Required fields:**
+- `tdp_watts`: Thermal Design Power in watts
+- `vendor`: Manufacturer name
+
+**Optional fields:**
+- `name`: Full descriptive name
+- `memory_gb`: GPU memory capacity
+- `notes`: Additional information
 
 ### Add a Region
 
@@ -138,10 +148,19 @@ Edit `carbon_intensity.json`:
   "eu-central-1": {
     "region_name": "EU Central (Frankfurt)",
     "kg_co2_per_kwh": 0.338,
+    "provider": "AWS",
     "notes": "German grid mix"
   }
 }
 ```
+
+**Required fields:**
+- `kg_co2_per_kwh`: Carbon intensity value
+- `provider`: Cloud provider (AWS/GCP/Azure) or "On-Premise"
+
+**Optional fields:**
+- `region_name`: Descriptive location name
+- `notes`: Data source or additional context
 
 ## Understanding Results
 
@@ -188,6 +207,84 @@ TOTAL ACROSS ALL RUNS:
 - 90 miles driven in an average passenger car
 - 10 kg of coal burned
 - 2.5 gallons of gasoline
+
+## Data Sources and Methodology
+
+### GPU TDP Data
+
+GPU Thermal Design Power (TDP) specifications are sourced from:
+- **Primary source**: [voidful/gpu-info-api](https://github.com/voidful/gpu-info-api) - Open source GPU database
+- **Manual verification**: NVIDIA official specifications and datasheets
+- **Field extracted**: `"TDP (Watts)"` for each GPU model
+
+To add new GPUs, reference the GPU database API or manufacturer specifications.
+
+### Carbon Intensity Data
+
+Regional carbon intensity values (kg CO₂/kWh) are sourced from:
+
+1. **Cloud Carbon Footprint (CCF)**
+   - Repository: [cloud-carbon-coefficients](https://github.com/cloud-carbon-footprint/cloud-carbon-coefficients)
+   - License: Apache 2.0
+   - Methodology: Combines EPA eGRID data with cloud provider PUE values
+
+2. **US Regions**
+   - Source: EPA eGRID 2020 (Emissions & Generation Resource Integrated Database)
+   - NERC region-based carbon intensity factors
+   - Updated annually by EPA
+
+3. **Cloud Provider Reports**
+   - Google Cloud: [Sustainability reports](https://cloud.google.com/sustainability)
+   - Microsoft Azure: [Emissions Impact Dashboard](https://www.microsoft.com/en-us/sustainability)
+   - AWS: Regional grid mix data
+
+### Methodology References
+
+This calculator follows the methodology described in:
+- **"Energy and Policy Considerations for Deep Learning in NLP"** (Strubell et al., 2019)
+- **Cloud Carbon Footprint Methodology** - [Documentation](https://www.cloudcarbonfootprint.org/docs/methodology/)
+- **Green Software Foundation** - [Software Carbon Intensity (SCI) Specification](https://greensoftware.foundation/)
+
+**Formula:**
+```
+Total Emissions = GPU Energy × PUE × Grid Carbon Intensity
+
+Where:
+- GPU Energy = TDP × GPU Count × Duration × Utilization
+- PUE = Power Usage Effectiveness (datacenter efficiency)
+- Grid Carbon Intensity = kg CO₂ per kWh (regional grid mix)
+```
+
+### Limitations and Assumptions
+
+1. **TDP vs Actual Power**: Uses TDP as proxy for actual power draw. Real consumption varies with workload.
+2. **Static Carbon Intensity**: Uses average regional values. Actual values vary by time of day and season.
+3. **GPU-only Accounting**: Does not include CPU, memory, storage, or networking power.
+4. **Training Only**: Does not account for model development, experimentation, or inference costs.
+
+For more accurate measurements, consider using runtime power monitoring tools like:
+- NVIDIA DCGM (Data Center GPU Manager)
+- CodeCarbon
+- Cloud provider carbon dashboards
+
+## CSV Output Format
+
+Results are appended to `emissions.csv` with the following columns:
+
+```csv
+run_name,timestamp,gpu_model,gpu_count,duration_hours,utilization,region,carbon_intensity_kg_co2_kwh,pue,energy_gpu_kwh,energy_total_kwh,emissions_kg_co2
+```
+
+**Example row:**
+```csv
+resnet50_training,2025-11-13T18:36:37.851337,A100,8,24,0.85,us-east-1,0.448,1.2,65.28,78.336,35.094
+```
+
+This format allows for:
+- Time-series analysis of training emissions
+- Comparison across different models and configurations
+- Integration with carbon accounting tools
+- Export to spreadsheets and data visualization tools
 
 ## Dependencies
 
