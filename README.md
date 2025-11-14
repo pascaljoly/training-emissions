@@ -18,6 +18,15 @@ This tool helps you estimate the environmental impact of ML model training by ca
    ```
 3. **View results** in console output and `emissions.csv`
 
+**Custom output file:**
+```bash
+# Specify a custom output file
+python3 calculate_emissions.py -o my_results.csv
+
+# Save to a custom directory
+python3 calculate_emissions.py --output results/2025/january_training.csv
+```
+
 ## Files
 
 ### Configuration Files
@@ -74,9 +83,23 @@ Edit `parameters.json`:
 
 ### 2. Run the Calculator
 
+**Basic usage** (saves to `emissions.csv`):
 ```bash
 python3 calculate_emissions.py
 ```
+
+**Custom output file:**
+```bash
+# Specify custom file name
+python3 calculate_emissions.py -o my_results.csv
+
+# Save to custom directory (directory will be created if needed)
+python3 calculate_emissions.py --output results/2025/january_training.csv
+```
+
+**Command-line options:**
+- `-o`, `--output`: Specify output CSV file path (default: `emissions.csv`)
+- `-h`, `--help`: Show help message with all options
 
 ### 3. View Results
 

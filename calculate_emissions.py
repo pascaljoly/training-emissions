@@ -9,6 +9,7 @@ based on GPU specifications, utilization, duration, and regional carbon intensit
 import json
 import csv
 import os
+import argparse
 from datetime import datetime
 from pathlib import Path
 
@@ -115,6 +116,10 @@ def save_to_csv(results, filename='emissions.csv'):
         'energy_gpu_kwh', 'energy_total_kwh', 'emissions_kg_co2'
     ]
 
+    # Create output directory if it doesn't exist
+    output_path = Path(filename)
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+
     # Check if file exists to determine if we need to write header
     file_exists = os.path.isfile(filename)
 
@@ -163,6 +168,29 @@ def print_summary(results):
 def main():
     """Main execution function."""
 
+    # Parse command-line arguments
+    parser = argparse.ArgumentParser(
+        description='Calculate energy consumption and CO2 emissions from ML training runs',
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+        epilog="""
+Examples:
+  # Use default output file (emissions.csv)
+  python3 calculate_emissions.py
+
+  # Specify custom output file
+  python3 calculate_emissions.py -o my_results.csv
+
+  # Specify output file in custom directory
+  python3 calculate_emissions.py --output results/2025/january_training.csv
+        """
+    )
+    parser.add_argument(
+        '-o', '--output',
+        default='emissions.csv',
+        help='Output CSV file path (default: emissions.csv). Directory will be created if it does not exist.'
+    )
+    args = parser.parse_args()
+
     # Get script directory
     script_dir = Path(__file__).parent
 
@@ -207,7 +235,7 @@ def main():
         exit(1)
 
     # Save results to CSV
-    csv_filename = script_dir / 'emissions.csv'
+    csv_filename = args.output
     print(f"\nSaving results to {csv_filename}...")
     save_to_csv(results, csv_filename)
     print("✓ Results saved successfully")

@@ -1,5 +1,7 @@
 # Generated output files
 emissions.csv
+*.csv
+results/
 
 # Python
 __pycache__/
